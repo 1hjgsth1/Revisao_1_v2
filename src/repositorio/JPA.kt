@@ -1,10 +1,8 @@
 package repositorio
 
-import financeiro.Caixa
 import produto.CaixaDaAgua
 import java.sql.Connection
 import java.sql.DriverManager
-import java.sql.DriverManager.drivers
 import java.sql.SQLException
 
 class JPA(
@@ -15,7 +13,7 @@ class JPA(
     val user: String = "postgres",
     val senha: String = "postgres",
     val url: String = "jdbc:postgresql://localhost:5432/caixaDaAgua",
-    var conexao: Connection? = null
+    var c: Connection? = null
 ) {
     fun conectar() {
         try {
@@ -23,7 +21,7 @@ class JPA(
             Class.forName("org.postgresql.Driver")
 
             //estabelecer conexao
-            conexao = DriverManager.getConnection(url, user, senha)
+            c = DriverManager.getConnection(url, user, senha)
             println("A conexão foi estabelecida ")
 
 
@@ -40,41 +38,41 @@ class JPA(
                     "(marca, modelo, dimensao, cor, material, formato, preco) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?) "
 
-            val stmt = conexao!!.prepareStatement(sql)
+            val stmt = c!!.prepareStatement(sql)
 
             //preparar lista para double precision
-            val doublePrecision = conexao!!.createArrayOf("float8", a.dimensao.toTypedArray())
+            val doublePrecision = c!!.createArrayOf("float8", a.dimensao.toTypedArray())
             //o typedArray() converte o array para um tipo de dado legivel para o POSTGRESQL
 
             //Preparar as variaveis para o banco
-            stmt.setString(1,a.marca)
-            stmt.setString(2,a.modelo)
-            stmt.setArray(3,doublePrecision)
-            stmt.setString(4,a.cor.name)
-            stmt.setString(5,a.material.name)
-            stmt.setString(6,a.formato)
-            stmt.setString(7,a.preco.toString())
+            stmt.setString(1, a.marca)
+            stmt.setString(2, a.modelo)
+            stmt.setArray(3, doublePrecision)
+            stmt.setString(4, a.cor.name)
+            stmt.setString(5, a.material.name)
+            stmt.setString(6, a.formato)
+            stmt.setString(7, a.preco.toString())
             stmt.executeUpdate()
 
             stmt.close()//encerra o placeholder
-            conexao!!.close()//encerra a conexao com o banco
+            c!!.close()//encerra a conexao com o banco
         } catch (e: SQLException) {
             println("F total parceiro: ${e.printStackTrace()}")
         }
-    } //fim do metodo salvar
+    } //FIM SALVAR
 
-    fun listar (){
-        try{
+    fun listar() {
+        try {
             conectar()
-            val stmt = conexao!!.createStatement()
+            val stmt = c!!.createStatement()
             val sql = "SELECT * FROM caixa_da_agua"
             //Esses metadados vem em forma de Lista, ResultSet
             val metadados = stmt.executeQuery(sql)
             val resultado = metadados.metaData //Metadados do banco
             val tamanhoTabela = resultado.columnCount //Tamanho da tabela em colunas
 
-            while(metadados.next()){
-                for(i in 1..tamanhoTabela){
+            while (metadados.next()) {
+                for (i in 1..tamanhoTabela) {
                     //nome da coluna
                     val nomeColuna = resultado.getColumnName(i)
                     //dado que esta nessa coluna
@@ -86,10 +84,28 @@ class JPA(
             }//fim while
 
             stmt.close()
-            conexao!!.close()
-        }catch (e: SQLException){
+            c!!.close()
+        } catch (e: SQLException) {
             println("F total parceiro: ${e.printStackTrace()}")
         }
-    } //fim do metodo listar
+    } //FIM LISTAR
 
+    fun editar(caixa: CaixaDaAgua, id: Int) {
+        try {
+            conectar()
+            val sql = "UPDATE FROM caixa_da_agua SET preco = ? WHERE id = ?"
+            //COntinuar a lógica para os outros itens
+
+            val stmt = c!!.prepareStatement(sql)
+            stmt.setString(1, caixa.preco.toString())
+            stmt.setInt(2, id)
+            stmt.executeUpdate() //Faz as alteraç~oes e manda para o banco
+
+            stmt.close()
+            c!!.close()
+
+        } catch (e: SQLException) {
+            println(e.printStackTrace())
+        }
+    }//FIM EDITAR
 }

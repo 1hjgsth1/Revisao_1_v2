@@ -4,7 +4,7 @@ import enums.Cor
 import enums.Material
 import java.math.BigDecimal
 
-class CaixaDaAgua (
+class CaixaDaAgua(
     /**
      * Marca, Modelo, Dimensão(altura, largura, profundidade), Enums.Cor, Material, Formato, .Pessoas.Instalador, Preço, Fornecedor
      * */

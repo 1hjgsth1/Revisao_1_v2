@@ -1,8 +1,7 @@
 package sistema.caixadeagua
 
-import produto.CaixaDaAgua
 import java.text.NumberFormat
-import java.util.Locale
+import java.util.*
 
 fun listarCaixa() {
     val formatador = NumberFormat.getCurrencyInstance(Locale.of("pt", "br"))

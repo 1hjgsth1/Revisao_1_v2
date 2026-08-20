@@ -6,16 +6,16 @@ import financeiro.Banco
 import java.math.BigDecimal
 import java.time.LocalDate
 
-class Instalador (
+class Instalador(
     nome: String,
     cpf: String,
     idade: Int,
     val salario: BigDecimal = "2000".toBigDecimal(),
     val turno: Turno,
     val habilidade: Habilidade
-) : Pessoa(nome, cpf, idade){
+) : Pessoa(nome, cpf, idade) {
 
-    override fun receberConta(valor : BigDecimal, conta: Pessoa) : Banco{
+    override fun receberConta(valor: BigDecimal, conta: Pessoa): Banco {
         return Banco(
             dinheiro = -valor,
             pessoa = conta,
