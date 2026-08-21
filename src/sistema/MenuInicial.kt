@@ -2,6 +2,7 @@ package sistema
 
 import sistema.caixadeagua.cadastrarNovaCaixa
 import sistema.caixadeagua.editarCaixa
+import sistema.caixadeagua.excluirCaixa
 import sistema.caixadeagua.listarCaixa
 
 fun menuInicial() {
@@ -18,9 +19,9 @@ fun menuInicial() {
             "1" -> cadastrarNovaCaixa()
             "2" -> editarCaixa()
             "3" -> listarCaixa()
-            "4" -> println("")
+            "4" -> excluirCaixa()
             "0" -> {
-                println("Adeus")
+                println("Até breve.")
                 break
             }
 

@@ -70,6 +70,7 @@ class JPA(
             val metadados = stmt.executeQuery(sql)
             val resultado = metadados.metaData //Metadados do banco
             val tamanhoTabela = resultado.columnCount //Tamanho da tabela em colunas
+            println("Tamanho da tabela: $tamanhoTabela")
 
             while (metadados.next()) {
                 for (i in 1..tamanhoTabela) {
@@ -93,12 +94,19 @@ class JPA(
     fun editar(caixa: CaixaDaAgua, id: Int) {
         try {
             conectar()
-            val sql = "UPDATE  caixa_da_agua SET preco = ? WHERE id = ?"
+            val sql =
+                "UPDATE caixa_da_agua SET " + "preco = ?, marca = ?, modelo = ?, formato = ?, dimensao = ?, cor = ?, material = ? WHERE id = ?"
             //COntinuar a lógica para os outros itens
 
             val stmt = c!!.prepareStatement(sql)
             stmt.setString(1, caixa.preco.toString())
-            stmt.setInt(2, id)
+            stmt.setString(2, caixa.marca)
+            stmt.setString(3, caixa.modelo)
+            stmt.setString(4, caixa.formato)
+            stmt.setInt(5, id)
+            stmt.setArray(6, c!!.createArrayOf("float8", caixa.dimensao.toTypedArray()))
+            stmt.setString(7, caixa.cor.name)
+            stmt.setString(8, caixa.material.name)
             stmt.executeUpdate() //Faz as alteraç~oes e manda para o banco
 
             stmt.close()
@@ -108,4 +116,21 @@ class JPA(
             println(e.printStackTrace())
         }
     }//FIM EDITAR
+
+    fun excluir(id: Int) {
+        try {
+            conectar()
+
+            val sql = "DELETE FROM caixa_da_agua WHERE id = ?"
+            val stmt = c!!.prepareStatement(sql)
+            stmt.setInt(1, id)
+            stmt.executeUpdate()
+
+            c!!.close()
+
+        } catch (e: SQLException) {
+            println(e.printStackTrace())
+        }
+
+    }
 }
