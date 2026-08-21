@@ -93,7 +93,7 @@ class JPA(
     fun editar(caixa: CaixaDaAgua, id: Int) {
         try {
             conectar()
-            val sql = "UPDATE FROM caixa_da_agua SET preco = ? WHERE id = ?"
+            val sql = "UPDATE  caixa_da_agua SET preco = ? WHERE id = ?"
             //COntinuar a lógica para os outros itens
 
             val stmt = c!!.prepareStatement(sql)
