@@ -7,9 +7,9 @@ class Movimentacao(
     val valor: BigDecimal,
     val dataMovimentacao: LocalDate,
     //val pessoa: Pessoa //Precisa fazer depois
-){
-    fun movimentar(valor: BigDecimal, data: String): Movimentacao {
-        //Salvar no banco
-    }
+) {
+//    fun movimentar(valor: BigDecimal, data: String): Movimentacao {
+//        //Salvar no banco
+//    }
 }
 

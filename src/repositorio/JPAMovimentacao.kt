@@ -1,8 +1,10 @@
 package repositorio
 
+import java.math.BigDecimal
 import java.sql.SQLException
+import java.time.LocalDateTime
 
-fun salvarMovimentacao() {
+fun salvarMovimentacao(contexto: String, valor: BigDecimal, data: LocalDateTime) {
     val jpa = JPA()
 
     try {
@@ -13,18 +15,10 @@ fun salvarMovimentacao() {
 
         val stmt = jpa.c!!.prepareStatement(sql)
 
-        //preparar lista para double precision
-        val doublePrecision = jpa.c!!.createArrayOf("float8", a.dimensao.toTypedArray())
-        //o typedArray() converte o array para um tipo de dado legivel para o POSTGRESQL
-
         //Preparar as variaveis para o banco
-        stmt.setString(1, a.marca)
-        stmt.setString(2, a.modelo)
-        stmt.setArray(3, doublePrecision)
-        stmt.setString(4, a.cor.name)
-        stmt.setString(5, a.material.name)
-        stmt.setString(6, a.formato)
-        stmt.setString(7, a.preco.toString())
+        stmt.setString(1, valor.toString())
+        stmt.setString(2, data.toString()) //Ta errado precisa da hora
+        stmt.setString(3, contexto)
         stmt.executeUpdate()
 
         stmt.close()//encerra o placeholder
