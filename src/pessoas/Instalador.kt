@@ -2,7 +2,7 @@ package pessoas
 
 import enums.Habilidade
 import enums.Turno
-import financeiro.Banco
+import financeiro.Movimentacao
 import java.math.BigDecimal
 import java.time.LocalDate
 
@@ -15,8 +15,8 @@ class Instalador(
     val habilidade: Habilidade
 ) : Pessoa(nome, cpf, idade) {
 
-    override fun receberConta(valor: BigDecimal, conta: Pessoa): Banco {
-        return Banco(
+    override fun receberConta(valor: BigDecimal, conta: Pessoa): Movimentacao {
+        return Movimentacao(
             dinheiro = -valor,
             pessoa = conta,
             dataMovimentacao = LocalDate.now()
