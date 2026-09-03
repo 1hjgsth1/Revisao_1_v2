@@ -9,11 +9,5 @@ open class Pessoa(
     val cpf: String = "CPF da .Pessoas.Pessoa",
     val idade: Int = 1
 ) {
-    open fun receberConta(valor: BigDecimal, conta: Pessoa): Movimentacao {
-        return Movimentacao(
-            dinheiro = valor,
-            pessoa = conta,
-            dataMovimentacao = LocalDate.now()
-        )
-    }
+
 }

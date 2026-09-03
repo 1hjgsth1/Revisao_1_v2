@@ -14,12 +14,4 @@ class Instalador(
     val turno: Turno,
     val habilidade: Habilidade
 ) : Pessoa(nome, cpf, idade) {
-
-    override fun receberConta(valor: BigDecimal, conta: Pessoa): Movimentacao {
-        return Movimentacao(
-            dinheiro = -valor,
-            pessoa = conta,
-            dataMovimentacao = LocalDate.now()
-        )
-    }
 }
