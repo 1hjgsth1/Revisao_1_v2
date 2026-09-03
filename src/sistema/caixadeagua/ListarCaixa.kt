@@ -1,8 +1,8 @@
 package sistema.caixadeagua
 
-import repositorio.JPA
+import repositorio.CRUDCaixaDaAgua
 
 fun listarCaixa() {
-    val jpa = JPA()
-    jpa.listar()
+    val crudCaixaDaAgua = CRUDCaixaDaAgua()
+    crudCaixaDaAgua.listar()
 }

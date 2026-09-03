@@ -3,7 +3,7 @@ package sistema.caixadeagua
 import enums.Cor
 import enums.Material
 import produto.CaixaDaAgua
-import repositorio.JPA
+import repositorio.CRUDCaixaDaAgua
 
 fun cadastrarNovaCaixa() {
     println("Digite a marca: ")
@@ -41,7 +41,7 @@ fun cadastrarNovaCaixa() {
     println("Qual é o preço: ")
     val preco = readln().toBigDecimal()
 
-    val conexao = JPA()//Cria a variável de conexão com o banco
+    val conexao = CRUDCaixaDaAgua()//Cria a variável de conexão com o banco
     conexao.salvar( //Chama a função salvar
         CaixaDaAgua(
             marca = marca,

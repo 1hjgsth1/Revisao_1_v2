@@ -1,36 +1,13 @@
 package repositorio
 
 import produto.CaixaDaAgua
-import java.sql.Connection
-import java.sql.DriverManager
 import java.sql.SQLException
 
-class JPA(
-    //porta: 5432
-    //user: postgres
-    //senha: postgres
-    //banco: caixaDaAgua
-    val user: String = "postgres",
-    val senha: String = "postgres",
-    val url: String = "jdbc:postgresql://localhost:5432/caixaDaAgua",
-    var c: Connection? = null
-) {
-    fun conectar() {
-        try {
-            //carregar o driver
-            Class.forName("org.postgresql.Driver")
+class CRUDCaixaDaAgua(
 
-            //estabelecer conexao
-            c = DriverManager.getConnection(url, user, senha)
-            println("A conexão foi estabelecida ")
+) : InterfaceJPA<CaixaDaAgua>, ConexaoPostgres() {
 
-
-        } catch (e: SQLException) {
-            println("F total parceiro: ${e.printStackTrace()}")
-        }
-    }
-
-    fun salvar(a: CaixaDaAgua) {
+    override fun salvar(item: CaixaDaAgua) {
         println("Salvando...")
         try {
             conectar()//abre a conexao com o banco
@@ -41,17 +18,17 @@ class JPA(
             val stmt = c!!.prepareStatement(sql)
 
             //preparar lista para double precision
-            val doublePrecision = c!!.createArrayOf("float8", a.dimensao.toTypedArray())
+            val doublePrecision = c!!.createArrayOf("float8", item.dimensao.toTypedArray())
             //o typedArray() converte o array para um tipo de dado legivel para o POSTGRESQL
 
             //Preparar as variaveis para o banco
-            stmt.setString(1, a.marca)
-            stmt.setString(2, a.modelo)
+            stmt.setString(1, item.marca)
+            stmt.setString(2, item.modelo)
             stmt.setArray(3, doublePrecision)
-            stmt.setString(4, a.cor.name)
-            stmt.setString(5, a.material.name)
-            stmt.setString(6, a.formato)
-            stmt.setString(7, a.preco.toString())
+            stmt.setString(4, item.cor.name)
+            stmt.setString(5, item.material.name)
+            stmt.setString(6, item.formato)
+            stmt.setString(7, item.preco.toString())
             stmt.executeUpdate()
 
             stmt.close()//encerra o placeholder
@@ -61,7 +38,7 @@ class JPA(
         }
     } //FIM SALVAR
 
-    fun listar() {
+    override fun listar() {
         try {
             conectar()
             val stmt = c!!.createStatement()
@@ -91,7 +68,7 @@ class JPA(
         }
     } //FIM LISTAR
 
-    fun editar(caixa: CaixaDaAgua, id: Int) {
+    override fun editar(item: CaixaDaAgua, id: Int) {
         try {
             conectar()
             val sql =
@@ -99,14 +76,14 @@ class JPA(
             //COntinuar a lógica para os outros itens
 
             val stmt = c!!.prepareStatement(sql)
-            stmt.setString(1, caixa.preco.toString())
-            stmt.setString(2, caixa.marca)
-            stmt.setString(3, caixa.modelo)
-            stmt.setString(4, caixa.formato)
+            stmt.setString(1, item.preco.toString())
+            stmt.setString(2, item.marca)
+            stmt.setString(3, item.modelo)
+            stmt.setString(4, item.formato)
             stmt.setInt(5, id)
-            stmt.setArray(6, c!!.createArrayOf("float8", caixa.dimensao.toTypedArray()))
-            stmt.setString(7, caixa.cor.name)
-            stmt.setString(8, caixa.material.name)
+            stmt.setArray(6, c!!.createArrayOf("float8", item.dimensao.toTypedArray()))
+            stmt.setString(7, item.cor.name)
+            stmt.setString(8, item.material.name)
             stmt.executeUpdate() //Faz as alteraç~oes e manda para o banco
 
             stmt.close()
@@ -117,7 +94,7 @@ class JPA(
         }
     }//FIM EDITAR
 
-    fun excluir(id: Int) {
+    override fun excluir(id: Int) {
         try {
             conectar()
 
@@ -133,4 +110,4 @@ class JPA(
         }
 
     }
-}
+}//FIM DA CLASSE
